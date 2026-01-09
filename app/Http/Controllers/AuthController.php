@@ -9,7 +9,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Mail;
-use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -32,9 +31,9 @@ class AuthController extends Controller
         // Agregar más datos al token
         $user = User::where('email', $credentials['email'])->where('active', true)->first();
         if (!$user) {
-            return response()->json(['error' => 'Unauthorized','message' => 'Datos de acceso incorrectos o usuario inactivo'], Http::UNAUTHORIZED);
+            return response()->json(['error' => 'Unauthorized','message' => 'Datos de acceso incorrectos o usuario inactivo'], 401);
         }elseif ($user->login_type=='gmail'){
-            return response()->json(['error' => 'Unauthorized','message' => 'Su inicio de sesión es con Gmail'], Http::BAD_REQUEST);
+            return response()->json(['error' => 'Unauthorized','message' => 'Su inicio de sesión es con Gmail'], 400);
         }
         $customClaims = [
             'role' => $user->role,
