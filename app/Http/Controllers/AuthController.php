@@ -104,6 +104,7 @@ class AuthController extends Controller
         $user = User::create([
             'name'     => $validated['name'],
             'email'    => $validated['email'],
+            'current_plan'    => $validated['current_plan'],
             'password' => bcrypt($validated['password']),
             'role'     => isset($validated['role']) ? $validated['role'] : 'admin',   // Puedes modificarlo
             'active'   => true,
