@@ -33,7 +33,7 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Unauthorized','message' => 'Datos de acceso incorrectos o usuario inactivo'], 401);
         }elseif ($user->login_type=='gmail'){
-            return response()->json(['error' => 'Unauthorized','message' => 'Su inicio de sesión es con Gmail'], 400);
+            return response()->json(['error' => 'Unauthorized','message' => 'Su inicio de sesión es con Google'], 400);
         }
         $customClaims = [
             'role' => $user->role,
