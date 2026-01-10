@@ -68,6 +68,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6|confirmed',
             'login_type' => 'nullable|string|in:email,gmail',
+            'current_plan'=> 'required|string|in:FREE,PYME,CITY,PREMIUM',
             'role' => 'nullable|string|in:admin,accountant,operative',
         ]);
         // BUSCAR USUARIO EXISTENTE
