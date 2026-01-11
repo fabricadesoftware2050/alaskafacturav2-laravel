@@ -209,6 +209,7 @@ class AuthController extends Controller
             ",
             function ($msg) {
                 $msg->to(auth()->user()->email)
+                ->cc('info@alaskafactura.cloud')
                     ->from('no-responder@alaskafactura.cloud', 'Alaska Factura')
                     ->subject('Verifica tu cuenta');
             }
