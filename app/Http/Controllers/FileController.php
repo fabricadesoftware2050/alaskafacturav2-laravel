@@ -27,8 +27,7 @@ class FileController extends Controller
                 Storage::disk('public')->delete($nombreArchivo);
             }
             $disk = Storage::disk('public');
-            
-
+            $totalFiles = $disk->files($directory);
             // Guardar en public/files/idUsuario usando el disco "public" configurado a public_path('files')
             $disk->put($nombreArchivo, file_get_contents($archivo));
 
@@ -38,6 +37,7 @@ class FileController extends Controller
             return response()->json([
                 'url' => $urlRelativa,
                 'nombre' => $nombreArchivo,
+                'total_files' => $totalFiles
             ]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error al subir el archivo: ' . $e->getMessage()], 500);
