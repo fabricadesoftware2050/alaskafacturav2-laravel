@@ -25,7 +25,11 @@ class FileController extends Controller
             if (Storage::disk('public')->exists($nombreArchivo)) {
                 Storage::disk('public')->delete($nombreArchivo);
             }
-            // Nombre único
+            // borrar los demas logos del usuario
+            $disk = Storage::disk('public');
+            $directory = $user->id . '/';
+            $disk->deleteDirectory($directory);
+
 
             // Guardar en public/files usando el disco "public" configurado a public_path('files')
             Storage::disk('public')->put($nombreArchivo, file_get_contents($archivo));
