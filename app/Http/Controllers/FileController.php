@@ -10,16 +10,17 @@ class FileController extends Controller
     public function subir(Request $request)
     {
         try {
+            $user = auth()->user();
             $request->validate([
             'file' => 'required|file|max:5120|mimes:jpg,png,gif,svg,doc,docx,pdf,webp', // puedes agregar mimes:jpg,png,pdf según necesites
             ]);
 
             $archivo = $request->file('file');
-            $nombreArchivo = uniqid() . '.' . $archivo->getClientOriginalExtension();
+            $nombreArchivo = $user->id."/".uniqid() . '.' . $archivo->getClientOriginalExtension();
             if($request->input('filename')){
                 $nombreArchivo = $request->input('filename');
                 $nombreArchivo = basename(parse_url($nombreArchivo, PHP_URL_PATH)); // obtiene "firma_auxiliar_123.png"
-                $nombreArchivo = $nombreArchivo. '.'  . $archivo->getClientOriginalExtension();
+                $nombreArchivo = $user->id."/".$nombreArchivo. '.'  . $archivo->getClientOriginalExtension();
             }
             if (Storage::disk('public')->exists($nombreArchivo)) {
                 Storage::disk('public')->delete($nombreArchivo);
