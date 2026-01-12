@@ -19,7 +19,7 @@ class FileController extends Controller
 
             $directory = $user->id . '/';
             $archivo = $request->file('file');
-            $tipo=$request->input('type_file')||'general';
+            $tipo=$request->input('type_file');
             $nombreArchivo = $directory.$tipo."_".uniqid() . '.' . $archivo->getClientOriginalExtension();
             if($request->input('filename')){
                 $nombreArchivo = $request->input('filename');
