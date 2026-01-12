@@ -15,24 +15,22 @@ class FileController extends Controller
             'file' => 'required|file|max:5120|mimes:jpg,png,gif,svg,doc,docx,pdf,webp', // puedes agregar mimes:jpg,png,pdf según necesites
             ]);
 
+            $directory = $user->id . '/';
             $archivo = $request->file('file');
-            $nombreArchivo = $user->id."/".uniqid() . '.' . $archivo->getClientOriginalExtension();
+            $nombreArchivo = $directory.uniqid() . '.' . $archivo->getClientOriginalExtension();
             if($request->input('filename')){
                 $nombreArchivo = $request->input('filename');
                 $nombreArchivo = basename(parse_url($nombreArchivo, PHP_URL_PATH)); // obtiene "firma_auxiliar_123.png"
-                $nombreArchivo = $user->id."/".$nombreArchivo. '.'  . $archivo->getClientOriginalExtension();
+                $nombreArchivo = $directory.$nombreArchivo. '.'  . $archivo->getClientOriginalExtension();
             }
             if (Storage::disk('public')->exists($nombreArchivo)) {
                 Storage::disk('public')->delete($nombreArchivo);
             }
-            // borrar los demas logos del usuario
             $disk = Storage::disk('public');
-            $directory = $user->id . '/';
-            $disk->deleteDirectory($directory);
+            
 
-
-            // Guardar en public/files usando el disco "public" configurado a public_path('files')
-            Storage::disk('public')->put($nombreArchivo, file_get_contents($archivo));
+            // Guardar en public/files/idUsuario usando el disco "public" configurado a public_path('files')
+            $disk->put($nombreArchivo, file_get_contents($archivo));
 
             // Retornar la URL relativa
             $urlRelativa = '/files/' . $nombreArchivo;
