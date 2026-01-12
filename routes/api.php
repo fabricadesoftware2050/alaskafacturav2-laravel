@@ -22,11 +22,14 @@ Route::group(['prefix' => 'v2'], function () {
             Route::post('verify_account', [AuthController::class,'verify_account']);
             Route::get('me', [AuthController::class,'me']);
 
-            Route::post('/upload', [FileController::class, 'subir']);
-            Route::delete('/deleteFile', [FileController::class, 'eliminarArchivo']);
-
-
+            
+            
         });
+        
+        Route::group(['prefix' => 'files'], function () {
+             Route::post('/upload', [FileController::class, 'subir']);
+             Route::delete('/deleteFile', [FileController::class, 'eliminarArchivo']);
+         });
 
     });
 
