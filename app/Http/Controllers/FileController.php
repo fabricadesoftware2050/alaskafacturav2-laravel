@@ -20,11 +20,11 @@ class FileController extends Controller
             $directory = $user->id . '/';
             $archivo = $request->file('file');
             $tipo=$request->input('type')||'general';
-            $nombreArchivo = $tipo."_".$directory.uniqid() . '.' . $archivo->getClientOriginalExtension();
+            $nombreArchivo = $directory.$tipo."_".uniqid() . '.' . $archivo->getClientOriginalExtension();
             if($request->input('filename')){
-                $nombreArchivo = $tipo."_".$request->input('filename');
+                $nombreArchivo = $request->input('filename');
                 $nombreArchivo = basename(parse_url($nombreArchivo, PHP_URL_PATH)); // obtiene "firma_auxiliar_123.png"
-                $nombreArchivo = $directory.$nombreArchivo. '.'  . $archivo->getClientOriginalExtension();
+                $nombreArchivo = $directory.$tipo."_".$nombreArchivo. '.'  . $archivo->getClientOriginalExtension();
             }
             if (Storage::disk('public')->exists($nombreArchivo)) {
                 Storage::disk('public')->delete($nombreArchivo);
