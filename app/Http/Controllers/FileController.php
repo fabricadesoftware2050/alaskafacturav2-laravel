@@ -14,12 +14,12 @@ class FileController extends Controller
             $user = auth()->user();
             $request->validate([
             'file' => 'required|file|max:5120|mimes:jpg,png,gif,svg,doc,docx,pdf,webp', // puedes agregar mimes:jpg,png,pdf según necesites
-            'type' => 'nullable|string',
+            'type_file' => 'required|string',
             ]);
 
             $directory = $user->id . '/';
             $archivo = $request->file('file');
-            $tipo=$request->input('type')||'general';
+            $tipo=$request->input('type_file')||'general';
             $nombreArchivo = $directory.$tipo."_".uniqid() . '.' . $archivo->getClientOriginalExtension();
             if($request->input('filename')){
                 $nombreArchivo = $request->input('filename');
