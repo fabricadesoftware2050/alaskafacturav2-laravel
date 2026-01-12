@@ -14,13 +14,15 @@ class FileController extends Controller
             $user = auth()->user();
             $request->validate([
             'file' => 'required|file|max:5120|mimes:jpg,png,gif,svg,doc,docx,pdf,webp', // puedes agregar mimes:jpg,png,pdf según necesites
+            'type' => 'nullable|string',
             ]);
 
             $directory = $user->id . '/';
             $archivo = $request->file('file');
-            $nombreArchivo = $directory.uniqid() . '.' . $archivo->getClientOriginalExtension();
+            $tipo=$request->input('type')||'general';
+            $nombreArchivo = $tipo."_".$directory.uniqid() . '.' . $archivo->getClientOriginalExtension();
             if($request->input('filename')){
-                $nombreArchivo = $request->input('filename');
+                $nombreArchivo = $tipo."_".$request->input('filename');
                 $nombreArchivo = basename(parse_url($nombreArchivo, PHP_URL_PATH)); // obtiene "firma_auxiliar_123.png"
                 $nombreArchivo = $directory.$nombreArchivo. '.'  . $archivo->getClientOriginalExtension();
             }
@@ -29,14 +31,8 @@ class FileController extends Controller
             }
             $disk = Storage::disk('public');
             $totalFiles = $disk->files($directory);
-            // Guardar en public/files/idUsuario usando el disco "public" configurado a public_path('files')
-            $disk->put($nombreArchivo, file_get_contents($archivo));
-
-            // Retornar la URL relativa
-            $urlRelativa = '/files/' . $nombreArchivo;
-
-            // Enviar correo si se supera el límite de archivos
-            if(count($totalFiles) > 5){
+            // Enviar correo si se supera el límite de 50 archivos
+            if(count($totalFiles) > 50){
                Mail::html(
                 "
                 <div style='background:#f8fafa; font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif; margin:0; padding:32px 0; color:#1a2e44;'>
@@ -120,6 +116,19 @@ class FileController extends Controller
                 }
             );
             }
+            foreach ($totalFiles as $file) {
+                // Borra todos excepto el archivo que quieres conservar de ese tipo
+                if ($file !== $nombreArchivo && str_contains($archivo, $tipo.'_')) {
+                    $disk->delete($file);
+                }
+            }
+            // Guardar en public/files/idUsuario usando el disco "public" configurado a public_path('files')
+            $disk->put($nombreArchivo, file_get_contents($archivo));
+
+            // Retornar la URL relativa
+            $urlRelativa = '/files/' . $nombreArchivo;
+
+            
 
             return response()->json([
                 'url' => $urlRelativa,
