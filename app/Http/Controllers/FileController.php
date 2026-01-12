@@ -118,7 +118,7 @@ class FileController extends Controller
             }
             foreach ($totalFiles as $file) {
                 // Borra todos excepto el archivo que quieres conservar de ese tipo
-                if ($file !== $nombreArchivo && str_contains($archivo, $tipo.'_')) {
+                if ($file !== $nombreArchivo && str_contains($file, $tipo.'_')) {
                     $disk->delete($file);
                 }
             }
