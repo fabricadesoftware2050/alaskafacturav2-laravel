@@ -13,6 +13,7 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
+        try{
         $data = $request->validate([
             'logo' => 'nullable|string',
             'escudo' => 'nullable|string',
@@ -65,6 +66,12 @@ class EmpresaController extends Controller
             'message' => 'Datos de la empresa guardados correctamente',
             'data' => $company,
         ]);
+        } catch (\Exception $ex) {
+        return response()->json([
+            'error' => 'Register failed',
+            'message' => $ex->getMessage()
+        ], 500);
+    }
     }
 
     /**
