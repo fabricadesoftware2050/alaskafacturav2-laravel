@@ -13,6 +13,7 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
+        return $request;
         try{
         $data = $request->validate([
             'logo' => 'nullable|string',
