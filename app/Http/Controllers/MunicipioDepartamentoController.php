@@ -17,7 +17,7 @@ class MunicipioDepartamentoController extends Controller
             $municipios = Municipio::with('departamento')->get();
 
             $resultado = $municipios->map(function ($municipio) {
-                return strtoupper($municipio->municipio) . ', ' . $municipio->departamento->departamento;
+                return strtoupper($municipio->municipio) . ', ' . strtoupper($municipio->departamento->departamento);
             });
 
             return response()->json(['municipios' => $resultado]);
