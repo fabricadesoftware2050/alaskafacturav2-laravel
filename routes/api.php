@@ -31,8 +31,8 @@ Route::group(['prefix' => 'v2'], function () {
         });
         Route::group(['prefix' => 'general'], function () {
             Route::get('/municipios', [MunicipioDepartamentoController::class, 'index']);
+            Route::apiResource('/empresas', EmpresaController::class);
         });
-        Route::apiResource('/empresas', EmpresaController::class);
 
     });
 
