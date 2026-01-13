@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MunicipioDepartamentoController;
+use App\Http\Controllers\EmpresaController;
 
 use App\Models\User;
 
@@ -31,6 +32,7 @@ Route::group(['prefix' => 'v2'], function () {
         Route::group(['prefix' => 'general'], function () {
             Route::get('/municipios', [MunicipioDepartamentoController::class, 'index']);
         });
+        Route::apiResourse('/empresas', EmpresaController::class);
 
     });
 

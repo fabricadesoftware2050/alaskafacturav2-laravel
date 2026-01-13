@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Empresa;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -68,6 +69,10 @@ public function getJWTIdentifier()
         return [];
     }
 
+    public function empresa()
+    {
+        return $this->hasOne(Empresa::class, 'usuario_id');
+    }
    
 
 }
