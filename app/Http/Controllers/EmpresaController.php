@@ -81,7 +81,11 @@ class EmpresaController extends Controller
     {
         $company = Empresa::where('usuario_id', $idUser)->first();
 
-        return response()->json($company);
+        return response()->json([
+            'success' => true,
+            'message' => 'Datos de la empresa guardados correctamente',
+            'data' => $company,
+        ]);
     }
 
     /**
