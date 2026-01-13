@@ -77,9 +77,9 @@ class EmpresaController extends Controller
     /**
      * Obtener empresa del usuario autenticado
      */
-    public function show(string $id)
+    public function show(string $idUser)
     {
-        $company = Empresa::findOrFail($id);
+        $company = Empresa::where('usuario_id', $idUser)->first();
 
         return response()->json($company);
     }
