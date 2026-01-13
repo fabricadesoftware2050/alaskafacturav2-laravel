@@ -51,7 +51,7 @@ class EmpresaController extends Controller
 
         $usuarioId = auth()->user()->id;
 
-        $company = Company::updateOrCreate(
+        $company = Empresa::updateOrCreate(
             [
                 'numero_identificacion' => $data['numero_identificacion'],
                 'usuario_id' => $usuarioId,
