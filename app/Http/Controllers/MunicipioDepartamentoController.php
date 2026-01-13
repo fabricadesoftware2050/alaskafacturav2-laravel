@@ -14,11 +14,17 @@ class MunicipioDepartamentoController extends Controller
     public function index()
     {
         try {
-            $municipios = Municipio::with('departamento')->get();
+            $municipios = Municipio::with('departamento')
+                ->join('departamentos', 'departamentos.id_departamento', '=', 'municipios.departamento_id')
+                ->orderBy('departamentos.departamento')
+                ->orderBy('municipios.municipio')
+                ->select('municipios.*')
+                ->get();
 
             $resultado = $municipios->map(function ($municipio) {
                 return strtoupper($municipio->municipio) . ', ' . strtoupper($municipio->departamento->departamento);
             });
+
 
             return response()->json(['municipios' => $resultado]);
 
