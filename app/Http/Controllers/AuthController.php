@@ -117,7 +117,7 @@ class AuthController extends Controller
             'login_type' => $validated['login_type'] === 'gmail' ? 'gmail' : 'email',
 
         ]);
-
+$user->loadMissing('empresa');
         // CUSTOM CLAIMS (mismos que login)
         $customClaims = [
                     'role' => $user->role,
@@ -127,6 +127,7 @@ class AuthController extends Controller
                     'login_type' => $user->login_type,
                     'verified' => $user->verified,
                     'current_plan' => $user->current_plan,
+                    'company' => $user->empresa,
                     'expires_in' => auth()->factory()->getTTL() * 60,
                 ];
 
