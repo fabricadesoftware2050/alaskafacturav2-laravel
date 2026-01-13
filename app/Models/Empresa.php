@@ -7,6 +7,7 @@ use App\Models\User;
 
 class Empresa extends Model
 {
+    protected $table = "companies";
     protected $fillable = [
         'logo',
         'escudo',
