@@ -26,13 +26,13 @@ Route::group(['prefix' => 'v2'], function () {
         });
         
         Route::group(['prefix' => 'files'], function () {
-             Route::post('/upload', [FileController::class, 'subir']);
-             Route::delete('/deleteFile', [FileController::class, 'eliminarArchivo']);
+            Route::post('/upload', [FileController::class, 'subir']);
+            Route::delete('/deleteFile', [FileController::class, 'eliminarArchivo']);
         });
         Route::group(['prefix' => 'general'], function () {
             Route::get('/municipios', [MunicipioDepartamentoController::class, 'index']);
         });
-        Route::apiResourse('/empresas', EmpresaController::class);
+        Route::apiResource('/empresas', EmpresaController::class);
 
     });
 
