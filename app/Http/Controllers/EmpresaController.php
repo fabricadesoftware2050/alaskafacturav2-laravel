@@ -79,7 +79,7 @@ class EmpresaController extends Controller
      */
     public function show(string $id)
     {
-        $company = Company::findOrFail($id);
+        $company = Empresa::findOrFail($id);
 
         return response()->json($company);
     }
