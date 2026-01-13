@@ -43,6 +43,7 @@ class AuthController extends Controller
             'name' => $user->name,
             'login_type' => $user->login_type,
             'verified' => $user->verified,
+            'company' => $user->empresa,
             'current_plan' => $user->current_plan,
             'expires_in' => auth()->factory()->getTTL() * 60
 
