@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Models\Municipio;
+use App\Models\Municipio;
+
 
 class MunicipioDepartamentoController extends Controller
 {
