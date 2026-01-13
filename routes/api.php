@@ -28,7 +28,9 @@ Route::group(['prefix' => 'v2'], function () {
              Route::post('/upload', [FileController::class, 'subir']);
              Route::delete('/deleteFile', [FileController::class, 'eliminarArchivo']);
         });
-        Route::get('/municipios', [MunicipioDepartamentoController::class, 'index']);
+        Route::group(['prefix' => 'general'], function () {
+            Route::get('/municipios', [MunicipioDepartamentoController::class, 'index']);
+        });
 
     });
 
