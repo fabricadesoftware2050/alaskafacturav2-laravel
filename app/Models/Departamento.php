@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use ApiPlatform\Metadata\ApiResource;
+#[ApiResource]
 class Departamento extends Model
 {
     protected $table = "departamentos";

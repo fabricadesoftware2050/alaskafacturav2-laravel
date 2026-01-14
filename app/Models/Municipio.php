@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use ApiPlatform\Metadata\ApiResource;
+#[ApiResource]
 class Municipio extends Model
 {
         protected $table = "municipios";
