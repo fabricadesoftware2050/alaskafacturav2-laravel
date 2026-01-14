@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Models;
+use ApiPlatform\Metadata\ApiResource;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 
+#[ApiResource]
 class Empresa extends Model
 {
     protected $table = "companies";
