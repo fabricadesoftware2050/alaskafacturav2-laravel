@@ -13,7 +13,7 @@ Route::prefix('v2')->group(function () {
 
     // AUTH público
     Route::prefix('auth')
-        ->middleware('throttle:per-route')
+        ->middleware('throttle:without-auth')
         ->group(function () {
             Route::post('login', [AuthController::class,'login']);
             Route::post('register', [AuthController::class,'register']);

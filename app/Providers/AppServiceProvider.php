@@ -33,7 +33,13 @@ class AppServiceProvider extends ServiceProvider
         // Define rate limiting for specific routes
         RateLimiter::for('per-route', function (Request $request) {
             return Limit::perMinute(5)->by(
-                $request->user()->id. '|' . $request->route()->uri()
+                $request->user()?->id. '|' . $request->route()->uri()
+            );
+        });
+
+        RateLimiter::for('without-auth', function (Request $request) {
+            return Limit::perMinute(5)->by(
+                $request->ip(). '|' . $request->route()->uri()
             );
         });
 
