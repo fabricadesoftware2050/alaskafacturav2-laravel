@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('dv', 5)->nullable();
             $table->string('razon_social');
             $table->string('responsabilidad', 100);
-            $table->string('nombre_comercial');
+            $table->string('nombre_comercial')->nullable();
             $table->string('direccion');
             $table->string('ubicacion');
             $table->string('telefono', 50);

@@ -9,6 +9,11 @@ use App\Http\Controllers\EmpresaController;
 
 use App\Models\User;
 
+Route::middleware(['throttle:60,1'])->group(function () {
+    Route::get('/test', function (Request $request) {
+        return $request->user();
+    });
+});
 Route::group(['prefix' => 'v2'], function () {
     
     Route::group(['prefix' => 'auth'], function () {
