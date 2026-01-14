@@ -27,7 +27,7 @@ Route::prefix('v2')->group(function () {
                 Route::post('refresh', [AuthController::class,'refresh'])->middleware('throttle:per-route');
                 Route::post('verify_account', [AuthController::class,'verify_account'])->middleware('throttle:per-route');
             });
-            Route::get('me', [AuthController::class,'me'])->prefix('auth')->middleware('throttle:me');
+            Route::get('auth/me', [AuthController::class,'me'])->middleware('throttle:me');
 
         // UPLOADS
         Route::prefix('files')->group(function () {
