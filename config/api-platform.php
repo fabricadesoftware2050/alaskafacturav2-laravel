@@ -23,7 +23,7 @@ return [
     'show_webby' => true,
 
     'routes' => [
-        'domain' => '/v2',
+        'domain' => null,
         // Global middleware applied to every API Platform routes
         // 'middleware' => [],
     ],
