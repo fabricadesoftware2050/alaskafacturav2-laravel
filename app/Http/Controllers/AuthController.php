@@ -30,12 +30,12 @@ class AuthController extends Controller
 
         // Agregar más datos al token
         $user = User::where('email', $credentials['email'])->where('active', true)->first();
-        $user->loadMissing('empresa');
         if (!$user) {
             return response()->json(['error' => 'Unauthorized','message' => 'Datos de acceso incorrectos o usuario inactivo'], 401);
         }elseif ($user->login_type=='gmail'){
             return response()->json(['error' => 'Unauthorized','message' => 'Su inicio de sesión es con Google'], 400);
         }
+        $user->loadMissing('empresa');
         $customClaims = [
             'role' => $user->role,
             'user_id' => $user->id,
