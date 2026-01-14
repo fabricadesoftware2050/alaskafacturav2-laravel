@@ -13,23 +13,21 @@ Route::prefix('v2')->group(function () {
 
     // AUTH público
     Route::prefix('auth')
-        ->middleware('throttle:without-auth')
         ->group(function () {
-            Route::post('login', [AuthController::class,'login']);
-            Route::post('register', [AuthController::class,'register']);
+            Route::post('login', [AuthController::class,'login'])->middleware('throttle:without-auth');
+            Route::post('register', [AuthController::class,'register'])->middleware('throttle:without-auth');
         });
 
     // AUTHENTICATED
     Route::middleware('auth:api')->group(function () {
 
         Route::prefix('auth')
-            ->middleware('throttle:per-route')
             ->group(function () {
-                Route::get('logout', [AuthController::class,'logout']);
-                Route::post('refresh', [AuthController::class,'refresh']);
-                Route::post('verify_account', [AuthController::class,'verify_account']);
-                Route::get('me', [AuthController::class,'me'])->middleware('throttle:me');
+                Route::get('logout', [AuthController::class,'logout'])->middleware('throttle:per-route');
+                Route::post('refresh', [AuthController::class,'refresh'])->middleware('throttle:per-route');
+                Route::post('verify_account', [AuthController::class,'verify_account'])->middleware('throttle:per-route');
             });
+            Route::get('me', [AuthController::class,'me'])->prefix('auth')->middleware('throttle:me');
 
         // UPLOADS
         Route::prefix('files')->group(function () {
