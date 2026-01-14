@@ -9,7 +9,7 @@ use App\Http\Controllers\EmpresaController;
 
 use App\Models\User;
 
-Route::middleware('throttle:api')->group(function () {
+Route::middleware('throttle:per-route')->group(function () {
 Route::group(['prefix' => 'v2'], function () {
     
     Route::group(['prefix' => 'auth'], function () {
