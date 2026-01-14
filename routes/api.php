@@ -28,7 +28,7 @@ Route::prefix('v2')->group(function () {
                 Route::get('logout', [AuthController::class,'logout']);
                 Route::post('refresh', [AuthController::class,'refresh']);
                 Route::post('verify_account', [AuthController::class,'verify_account']);
-                Route::get('me', [AuthController::class,'me']);
+                Route::get('me', [AuthController::class,'me'])->middleware('throttle:me');
             });
 
         // UPLOADS
@@ -41,13 +41,13 @@ Route::prefix('v2')->group(function () {
         });
 
         // GENERAL
-        Route::prefix('general')->group(function () {
+        Route::prefix('general')
+        ->middleware(['throttle:global'])->group(function () {
             Route::get('municipios', [MunicipioDepartamentoController::class, 'index']);
             Route::apiResource('empresas', EmpresaController::class);
         });
     });
 
-})
-->middleware('throttle:global');
+});
 
 

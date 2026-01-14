@@ -23,17 +23,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Define rate limiting for API requests en general
-       /* RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(5)->by(
-                $request->user()?->id ?: $request->ip()
+       RateLimiter::for('me', function (Request $request) {
+            return Limit::perMinute(60)->by(
+                $request->user()?->id
             );
-        });*/
+        });
 
         // Define rate limiting for specific routes
         RateLimiter::for('per-route', function (Request $request) {
             return Limit::perMinute(5)->by(
-                $request->user()?->id. '|' . $request->route()->uri()
+                ($request->user()?->id ?: $request->ip())
+    . '|' .
+    $request->route()->uri()
             );
         });
 
