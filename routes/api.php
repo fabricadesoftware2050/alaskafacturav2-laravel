@@ -9,7 +9,7 @@ use App\Http\Controllers\EmpresaController;
 
 use App\Models\User;
 
-Route::middleware(['throttle:60,1'])->group(function () {
+Route::middleware(['throttle:5,1'])->group(function () {
     Route::get('/test', function (Request $request) {
         return $request->user();
     });
