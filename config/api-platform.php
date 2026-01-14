@@ -23,7 +23,7 @@ return [
     'show_webby' => true,
 
     'routes' => [
-        'domain' => 'https://apiv2.alaskafactura.cloud/api/v2',
+        'domain' => 'apiv2.alaskafactura.cloud/api/v2',
         // Global middleware applied to every API Platform routes
         // 'middleware' => [],
     ],
