@@ -9,11 +9,7 @@ use App\Http\Controllers\EmpresaController;
 
 use App\Models\User;
 
-Route::middleware(['throttle:5,1'])->group(function () {
-    Route::get('/test', function (Request $request) {
-        return $request->user();
-    });
-});
+Route::middleware('throttle:api')->group(function () {
 Route::group(['prefix' => 'v2'], function () {
     
     Route::group(['prefix' => 'auth'], function () {
@@ -23,7 +19,7 @@ Route::group(['prefix' => 'v2'], function () {
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::group(['prefix' => 'auth'], function () {
-
+            
             Route::get('logout', [AuthController::class,'logout']);
             Route::post('refresh', [AuthController::class,'refresh']);
             Route::post('verify_account', [AuthController::class,'verify_account']);
@@ -41,7 +37,8 @@ Route::group(['prefix' => 'v2'], function () {
 
     });
 
- 
+    
+});
 
 
 });
