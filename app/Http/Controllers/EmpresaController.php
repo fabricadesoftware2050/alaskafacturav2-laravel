@@ -47,7 +47,7 @@ class EmpresaController extends Controller
             'representante_cargo' => 'required|string',
             'representante_celular' => 'string|max:20',
             'representante_correo' => 'email',
-            'correo_alegra' => 'nullable|string|max:100',
+            'correo_alegra' => 'nullable|email|max:100',
             'token_alegra' => 'nullable|string|max:200'
         ]);
 

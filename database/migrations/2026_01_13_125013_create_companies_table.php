@@ -47,6 +47,8 @@ return new class extends Migration
             $table->string('representante_cargo')->default('GERENTE GENERAL');
             $table->string('representante_celular', 25);
             $table->string('representante_correo',200);
+            $table->string('correo_alegra',200)->nullable();
+            $table->string('token_alegra',200)->nullable();
 
             // --- Relación ---
             $table->foreignId('usuario_id')
