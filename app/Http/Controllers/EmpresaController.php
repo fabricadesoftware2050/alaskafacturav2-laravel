@@ -41,12 +41,14 @@ class EmpresaController extends Controller
             'gran_contribuyente' => 'nullable|boolean',
             'autorretenedor' => 'nullable|boolean',
             'agente_retencion_iva' => 'nullable|boolean',
-
+            
             'representante_nombre' => 'required|string',
             'representante_cedula' => 'required|string|max:30',
             'representante_cargo' => 'required|string',
             'representante_celular' => 'string|max:20',
             'representante_correo' => 'email',
+            'correo_alegra' => 'nullable|string|max:100',
+            'token_alegra' => 'nullable|string|max:200'
         ]);
 
         $usuarioId = auth()->user()->id;

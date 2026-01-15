@@ -41,6 +41,8 @@ class Empresa extends Model
         'representante_celular',
         'representante_correo',
         'usuario_id',
+        'correo_alegra',
+        'token_alegra',
     ];
 
     public function user()
