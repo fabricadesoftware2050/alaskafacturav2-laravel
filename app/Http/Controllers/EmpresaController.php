@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Empresa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class EmpresaController extends Controller
 {
@@ -63,6 +64,9 @@ class EmpresaController extends Controller
             ])
         );
 
+        // 🔑 LIMPIAR CACHE
+        Cache::forget("empresa_usuario_{$usuarioId}");
+
         return response()->json([
             'success' => true,
             'message' => 'Datos de la empresa guardados correctamente',
@@ -81,13 +85,35 @@ class EmpresaController extends Controller
      */
     public function show(string $idUser)
     {
+        /*
         $company = Empresa::where('usuario_id', $idUser)->first();
 
         return response()->json([
             'success' => true,
             'message' => 'Datos de la empresa guardados correctamente',
             'data' => $company,
-        ]);
+        ]);*/
+
+        try {
+
+            $cacheKey = "empresa_usuario_{$idUser}";
+
+            $company = Cache::rememberForever($cacheKey, function () use ($idUser) {
+                return Empresa::where('usuario_id', $idUser)->first();
+            });
+
+            return response()->json([
+                'success' => true,
+                'data' => $company,
+            ]);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener la empresa'
+            ], 500);
+        }
     }
 
     /**
