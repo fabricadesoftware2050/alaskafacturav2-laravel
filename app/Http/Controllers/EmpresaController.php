@@ -83,7 +83,7 @@ class EmpresaController extends Controller
     /**
      * Obtener empresa del usuario autenticado
      */
-    public function show(string $idUser)
+    public function show(string $idNoUsado)
     {
         /*
         $company = Empresa::where('usuario_id', $idUser)->first();
@@ -95,6 +95,8 @@ class EmpresaController extends Controller
         ]);*/
 
         try {
+            $idUser = auth()->user()->id;
+
 
             $cacheKey = "empresa_usuario_{$idUser}";
 
