@@ -161,7 +161,7 @@ $user->loadMissing('empresa');
                     <table width='580' cellpadding='0' cellspacing='0' style='background:#ffffff; border-radius:8px; border:1px solid #e5e7eb;'>
                     <tr>
                         <td style='padding:32px;'>
-                        <img src='https://alaskafactura.cloud/alaskaia.png' alt='Alaska Factura' width='100%'> 
+                        <img src='https://alaskafactura.cloud/logo_vertical_light.png' alt='Alaska Factura' width='100%'> 
 
                         <h1 style='margin:0 0 12px; font-size:20px;'>
                             ¡Bienvenidos a Facturación de Servicios Públicos!
