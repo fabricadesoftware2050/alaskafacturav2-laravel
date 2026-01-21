@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
@@ -35,6 +36,9 @@ class AuthController extends Controller
         }elseif ($user->login_type=='gmail'){
             return response()->json(['error' => 'Unauthorized','message' => 'Su inicio de sesión es con Google'], 400);
         }
+        // 🔑 LIMPIAR CACHE
+        Cache::forget("empresa_usuario_{$user->id}");
+
         $user->loadMissing('empresa');
         $customClaims = [
             'role' => $user->role,
@@ -52,6 +56,8 @@ class AuthController extends Controller
         //if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized','message' => 'Datos de acceso incorrectos'], 401);
         }
+        
+        
 
         return $this->respondWithToken($token);
         } catch (Exception $ex) {
@@ -76,6 +82,9 @@ class AuthController extends Controller
         // BUSCAR USUARIO EXISTENTE
         $user = User::where('email', $request->email)->first();
         if ($user) {
+            // 🔑 LIMPIAR CACHE
+        Cache::forget("empresa_usuario_{$user->id}");
+
             $user->loadMissing('empresa');
             // SI ES UN USUARIO QUE FUE REGISTRADO POR GOOGLE → LOGIN DIRECTO
             if ($user->login_type == $validated['login_type']) {
@@ -241,6 +250,9 @@ $user->loadMissing('empresa');
     {
         try {
             $user = auth()->user();
+            // 🔑 LIMPIAR CACHE
+        Cache::forget("empresa_usuario_{$user->id}");
+
             return response()->json([
                 'data' => $user,
                 'message' => 'Operación exitosa'
@@ -254,6 +266,9 @@ $user->loadMissing('empresa');
     {
         try {
             $user = auth()->user();
+            // 🔑 LIMPIAR CACHE
+        Cache::forget("empresa_usuario_{$user->id}");
+
             if($user->verification_code == "VERIFIED"){
                 return response()->json(['error' => 'Account Already Verified','message' => 'Cuenta ya verificada'], 400);
             }
