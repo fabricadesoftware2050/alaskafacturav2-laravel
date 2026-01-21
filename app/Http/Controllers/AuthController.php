@@ -78,7 +78,7 @@ class AuthController extends Controller
         if ($user) {
             $user->loadMissing('empresa');
             // SI ES UN USUARIO QUE FUE REGISTRADO POR GOOGLE → LOGIN DIRECTO
-            if ($user->login_type === 'gmail' && $validated['login_type'] === 'gmail') {
+            if ($user->login_type == $validated['login_type']) {
 
                 $customClaims = [
                     'role' => $user->role,
@@ -95,13 +95,16 @@ class AuthController extends Controller
                 $token = auth()->claims($customClaims)->login($user);
 
                 return $this->respondWithToken($token);
+            }else{
+                 // SI EXISTE PERO NO ES GOOGLE → ERROR
+                return response()->json([
+                    'error' => 'Email in use',
+                    'message' => 'Este correo debe acceder usando '.(str_replace('email','Correo y Contraseña', $user->login_type) .'').".",
+                ], 400);
             }
 
-            // SI EXISTE PERO NO ES GOOGLE → ERROR
-            return response()->json([
-                'error' => 'Email in use',
-                'message' => 'Este correo debe iniciar sesión vía Gmail.'
-            ], 400);
+
+           
         }
 
         // CREAR USUARIO
