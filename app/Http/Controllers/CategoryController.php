@@ -19,7 +19,7 @@ class CategoryController extends Controller
             
 
 
-            return response()->json([json_decode('[
+            return response()->json(json_decode('[
             {
             "name": "ACUEDUCTO",
             "description": null,
@@ -32,7 +32,7 @@ class CategoryController extends Controller
             "status": "active",
             "id": "19"
         }
-            ]')]);
+            ]'));
 
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error al listar municipios ' . $e->getMessage()], 500);
