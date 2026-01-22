@@ -19,7 +19,7 @@ class CategoryController extends Controller
             
 
 
-            return response()->json(['data' => json_encode('
+            return response()->json(['data' => json_decode('
             {
             "name": "ACUEDUCTO",
             "description": null,

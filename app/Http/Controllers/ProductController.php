@@ -19,7 +19,7 @@ class ProductController extends Controller
             
 
 
-            return response()->json(json_encode('
+            return response()->json(json_decode('
             [{
         "id": "1",
         "category": {
