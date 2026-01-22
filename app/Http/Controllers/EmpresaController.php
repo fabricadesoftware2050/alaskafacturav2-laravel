@@ -86,6 +86,7 @@ class EmpresaController extends Controller
         
         
         try {
+            $idUser = auth()->user()->id;
             $company = Empresa::where('usuario_id', $idUser)->first();
     
             return response()->json([
