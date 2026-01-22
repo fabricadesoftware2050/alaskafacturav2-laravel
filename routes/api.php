@@ -7,6 +7,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\MunicipioDepartamentoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 use App\Models\User;
 
@@ -45,6 +46,7 @@ Route::prefix('v2')->group(function () {
             Route::get('municipios', [MunicipioDepartamentoController::class, 'index']);
             Route::apiResource('empresas', EmpresaController::class);
             Route::apiResource('products', ProductController::class);
+            Route::apiResource('categories', CategoryController::class);
         });
     });
 
