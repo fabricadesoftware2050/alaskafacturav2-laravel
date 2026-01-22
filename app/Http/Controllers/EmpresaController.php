@@ -64,8 +64,6 @@ class EmpresaController extends Controller
             ])
         );
 
-        // 🔑 LIMPIAR CACHE
-        Cache::forget("empresa_usuario_{$usuarioId}");
 
         return response()->json([
             'success' => true,
@@ -85,30 +83,17 @@ class EmpresaController extends Controller
      */
     public function show(string $idNoUsado)
     {
-        /*
-        $company = Empresa::where('usuario_id', $idUser)->first();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Datos de la empresa guardados correctamente',
-            'data' => $company,
-        ]);*/
-
+        
+        
         try {
-            $idUser = auth()->user()->id;
-
-
-            $cacheKey = "empresa_usuario_{$idUser}";
-
-            $company = Cache::rememberForever($cacheKey, function () use ($idUser) {
-                return Empresa::where('usuario_id', $idUser)->first();
-            });
-
+            $company = Empresa::where('usuario_id', $idUser)->first();
+    
             return response()->json([
                 'success' => true,
+                'message' => 'Datos de la empresa guardados correctamente',
                 'data' => $company,
             ]);
-
+            
         } catch (\Exception $e) {
 
             return response()->json([
