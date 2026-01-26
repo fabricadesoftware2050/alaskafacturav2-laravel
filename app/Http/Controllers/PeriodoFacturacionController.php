@@ -47,7 +47,7 @@ class PeriodoFacturacionController extends Controller
 
 
         $model = $query
-            ->orderBy('fecha_inicio')
+            ->orderBy('fecha_inicio','desc')
             ->paginate($perPage);
 
         return response()->json([
