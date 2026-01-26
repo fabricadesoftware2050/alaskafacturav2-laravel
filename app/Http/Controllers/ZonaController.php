@@ -133,6 +133,7 @@ class ZonaController extends Controller
                     ->ignore($zona->id),
             ],
             'nombre' => 'required|string|max:30',
+            'activa'=> 'required',
         ]);
 
         $zona->update($data);
