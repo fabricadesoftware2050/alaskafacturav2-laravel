@@ -76,7 +76,7 @@ class ZonaController extends Controller
     
             return response()->json([
                 'success' => true,
-                'message' => 'Datos de la zona guardados correctamente',
+                'message' => 'Datos de la zona consultados correctamente',
                 'data' => $zona,
             ]);
             
