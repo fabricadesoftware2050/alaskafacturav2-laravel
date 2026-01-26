@@ -19,13 +19,22 @@ class ZonaController extends Controller
         $user = auth()->user();
         $company = Empresa::where('usuario_id', $user->id)->firstOrFail();
 
-        // Parámetros de paginación
-        $perPage = $request->get('per_page', 10); // default 10
-        $page    = $request->get('page', 1);
+        $perPage = min($request->get('per_page', 10), 100);
 
-        $zonas = Zona::where('company_id', $company->id)
+        $query = Zona::where('company_id', $company->id);
+
+        // 🔍 SEARCH
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('codigo', 'like', "%{$search}%")
+                  ->orWhere('nombre', 'like', "%{$search}%");
+            });
+        }
+
+        $zonas = $query
             ->orderBy('codigo')
-            ->paginate($perPage, ['*'], 'page', $page);
+            ->paginate($perPage);
 
         return response()->json([
             'success' => true,
@@ -46,6 +55,7 @@ class ZonaController extends Controller
         ], 500);
     }
 }
+
 
     /**
      * Crear o actualizar empresa (UPSERT por NIT + usuario)
