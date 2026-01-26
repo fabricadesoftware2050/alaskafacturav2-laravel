@@ -38,10 +38,10 @@ class PeriodoFacturacionController extends Controller
             });
         }
 
-        if ($request->filled('estado')) {
-            $estado = $request->estado;
+        if ($request->filled('status')) {
+            $estado = $request->status;
             $query->where(function ($q) use ($estado) {
-                $q->where('codigo', $estado);
+                $q->where('estado', $estado);
             });
         }
 
