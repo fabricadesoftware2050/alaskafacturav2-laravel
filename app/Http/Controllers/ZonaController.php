@@ -32,6 +32,13 @@ class ZonaController extends Controller
             });
         }
 
+         if ($request->filled('status')) {
+            $status = $request->status;
+            $query->where(function ($q) use ($status) {
+                $q->where('activa', "%{$status}%");
+            });
+        }
+
         $zonas = $query
             ->orderBy('codigo')
             ->paginate($perPage);
