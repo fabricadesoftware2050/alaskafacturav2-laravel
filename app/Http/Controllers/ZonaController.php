@@ -40,7 +40,7 @@ class ZonaController extends Controller
         }
 
         $zonas = $query
-            ->orderBy('codigo')
+            ->orderBy('nombre')
             ->paginate($perPage);
 
         return response()->json([
