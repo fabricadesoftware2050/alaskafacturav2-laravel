@@ -113,6 +113,46 @@ class ZonaController extends Controller
     }
     }
 
+    public function update(Request $request, $id)
+{
+    try {
+        $user = auth()->user();
+        $company = Empresa::where('usuario_id', $user->id)->firstOrFail();
+
+        $zona = Zona::where('id', $id)
+            ->where('company_id', $company->id)
+            ->firstOrFail();
+
+        $data = $request->validate([
+            'codigo' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('zonas')
+                    ->where(fn ($q) => $q->where('company_id', $company->id))
+                    ->ignore($zona->id),
+            ],
+            'nombre' => 'required|string|max:30',
+        ]);
+
+        $zona->update($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Zona actualizada correctamente',
+            'data' => $zona,
+        ]);
+
+    } catch (\Exception $ex) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al actualizar la zona',
+            'error' => $ex->getMessage()
+        ], 500);
+    }
+}
+
+
     /**
      * Obtener empresa del usuario autenticado
      */
