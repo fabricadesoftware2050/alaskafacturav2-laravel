@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('periodo_facturacion', function (Blueprint $table) {
             $table->id();
-             $table->string('codigo', 10);
+             $table->string('codigo', 10)->unique(true);
              $table->string('nombre', 100);
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
