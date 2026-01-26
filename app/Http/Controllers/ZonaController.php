@@ -26,7 +26,7 @@ public function index()
             return response()->json([
                 'success' => true,
                 'message' => 'Datos de la zona consultados correctamente',
-                'data' => $zona,
+                'data' => $zona||[],
             ]);
             
         } catch (\Exception $e) {
