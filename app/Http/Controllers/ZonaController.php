@@ -26,7 +26,7 @@ public function index()
             return response()->json([
                 'success' => true,
                 'message' => 'Datos de la zona consultados correctamente',
-                'data' => $zona??[],
+                'data' => $zona,
             ]);
             
         } catch (\Exception $e) {
@@ -75,8 +75,8 @@ public function index()
 
         return response()->json([
             'success' => true,
-            'message' => 'Datos de la empresa guardados correctamente',
-            'data' => $company,
+            'message' => 'Datos guardados correctamente',
+            'data' => $zona,
         ]);
         } catch (\Exception $ex) {
         return response()->json([
@@ -97,7 +97,7 @@ public function index()
             $idUser = auth()->user()->id;
             $company = Empresa::where('usuario_id', $idUser)->first();
     
-            $zona= Zona::where('company_id', $company ->id)->first();
+            $zona= Zona::where('company_id', $company->id)->first();
     
             return response()->json([
                 'success' => true,
