@@ -132,12 +132,12 @@ class PeriodoFacturacionController extends Controller
                 'string',
                 'max:100',
             ],
-            'fecha_inicio' => 'required|date|max:16',
-            'fecha_fin' => 'required|date|max:16',
-            'fecha_lectura' => 'nullable|date|max:16',
-            'fecha_facturacion' => 'nullable|date|max:16',
-            'fecha_vencimiento' => 'nullable|date|max:16',
-            'estado' => "required|string|in:'ABIERTO','EN LECTURA','FACTURADO','CERRADO'",
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+            'fecha_lectura' => 'nullable|date|after_or_equal:fecha_fin',
+            'fecha_facturacion' => 'nullable|date|after_or_equal:fecha_lectura',
+            'fecha_vencimiento' => 'nullable|date|after_or_equal:fecha_facturacion',
+            'estado' => 'required|string|in:ABIERTO,EN LECTURA,FACTURADO,CERRADO',
         ]);
 
         $model->update($data);
