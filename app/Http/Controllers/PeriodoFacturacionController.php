@@ -72,7 +72,14 @@ class PeriodoFacturacionController extends Controller
     {
         try{
             $idUser = auth()->user()->id;
-        $company = Empresa::where('usuario_id', $idUser)->first();
+            $company = Empresa::where('usuario_id', $idUser)->first();
+            if (!$company) {
+                return response()->json([
+                    'success'=> false,
+                    'message'=> 'No se logró consultar la empresa'
+                    ],401);
+
+            } 
     
        $data = $request->validate([
             'codigo' => [
