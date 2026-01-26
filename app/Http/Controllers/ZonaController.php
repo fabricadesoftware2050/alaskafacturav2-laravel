@@ -32,8 +32,8 @@ class ZonaController extends Controller
             });
         }
 
-         if ($request->status=='true' || $request->status=='false') {
-            $status = $request->status=='true'?1:0;
+         if ($request->status=='1' || $request->status=='0') {
+            $status = $request->status=='1'?1:0;
             $query->where(function ($q) use ($status) {
                 $q->where('activa', $status);
             });
