@@ -65,13 +65,13 @@ class ZonaController extends Controller
         
         
         try {
-            $idUser = auth()->user()->id;
-            $company = Empresa::where('usuario_id', $idUser)->first();
+            $company = auth()->user()->company;
+            $zona= Zona::where('company_id', $company ->id)->first();
     
             return response()->json([
                 'success' => true,
-                'message' => 'Datos de la empresa guardados correctamente',
-                'data' => $company,
+                'message' => 'Datos de la zona guardados correctamente',
+                'data' => $zona,
             ]);
             
         } catch (\Exception $e) {
@@ -86,10 +86,20 @@ class ZonaController extends Controller
     /**
      * NO permitir eliminar
      */
-    public function destroy()
+    public function destroy($id)
     {
+        try{
+         $zona= Zona::findOrFail($id);
+         $zona->delete();
+          return response()->json([
+            'message' => 'Operaciópn exitosa'
+        ], 2000);
+        } catch (\Exception $e) {
+
+
         return response()->json([
             'message' => 'No está permitido eliminar la empresa'
         ], 403);
+        }
     }
 }
