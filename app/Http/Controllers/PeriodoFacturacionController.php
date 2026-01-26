@@ -27,7 +27,8 @@ class PeriodoFacturacionController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('codigo', 'like', "%{$search}%");
+                $q->where('codigo', 'like', "%{$search}%")
+                 ->orWhere('nombre', 'like', "%{$search}%");
             });
         }
 
@@ -78,6 +79,10 @@ class PeriodoFacturacionController extends Controller
                 'required',
                 'string',
                 'max:10',
+            ],'nombre' => [
+                'required',
+                'string',
+                'max:100',
             ],
             'feha_inicio' => 'required|date|max:16',
             'feha_fin' => 'required|date|max:16',
@@ -122,6 +127,10 @@ class PeriodoFacturacionController extends Controller
                 'required',
                 'string',
                 'max:10',
+            ],'nombre' => [
+                'required',
+                'string',
+                'max:100',
             ],
             'feha_inicio' => 'required|date|max:16',
             'feha_fin' => 'required|date|max:16',

@@ -9,6 +9,7 @@ class PeriodoFacturacion extends Model
     protected $table = "periodo_facturacion";
 
     protected $fillable = [
+        "codigo",
         "nombre",
         "fecha_inicio",
         "fecha_fin",

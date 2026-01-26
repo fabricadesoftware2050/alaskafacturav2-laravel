@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('periodo_facturacion', function (Blueprint $table) {
             $table->id();
              $table->string('codigo', 10);
+             $table->string('nombre', 100);
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
             $table->date('fecha_lectura')->nullable(true);
