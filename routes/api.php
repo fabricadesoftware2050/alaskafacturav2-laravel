@@ -7,6 +7,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\MunicipioDepartamentoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\ZonaController;
+use App\Http\Controllers\PeriodoFacturacionController;
 
 use App\Models\User;
 
@@ -45,6 +46,7 @@ Route::prefix('v2')->group(function () {
             Route::get('municipios', [MunicipioDepartamentoController::class, 'index']);
             Route::apiResource('empresas', EmpresaController::class);
             Route::apiResource('zonas', ZonaController::class);
+            Route::apiResource('periodos_facturacion', PeriodoFacturacionController::class);
         });
     });
 
