@@ -45,7 +45,6 @@ class ZonaController extends Controller
 
         return response()->json([
             'success' => true,
-            'est' => $request->status,
             'message' => 'Datos de las zonas consultados correctamente',
             'data' => $zonas->items(),
             'meta' => [
