@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Zona;
+use App\Models\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
@@ -17,20 +18,23 @@ class ZonaController extends Controller
     public function store(Request $request)
     {
         try{
+            $idUser = auth()->user()->id;
+        $company = Empresa::where('usuario_id', $idUser)->first();
+    
         $data = $request->validate([
             'codigo' => [
                 'required',
                 'string',
                 'max:50',
                 Rule::unique('zonas')->where(fn ($q) =>
-                    $q->where('company_id', auth()->user()->company->id)
+                    $q->where('company_id', $company->id)
                 ),
             ],
             'nombre' => 'required|string|max:30',
         ]);
 
 
-        $company = auth()->user()->company;
+        
 
         $zona = Zona::updateOrCreate(
             [
@@ -65,7 +69,9 @@ class ZonaController extends Controller
         
         
         try {
-            $company = auth()->user()->company;
+            $idUser = auth()->user()->id;
+            $company = Empresa::where('usuario_id', $idUser)->first();
+    
             $zona= Zona::where('company_id', $company ->id)->first();
     
             return response()->json([
@@ -78,7 +84,7 @@ class ZonaController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error al obtener la empresa'
+                'message' => 'Error al obtener la zona'
             ], 500);
         }
     }
