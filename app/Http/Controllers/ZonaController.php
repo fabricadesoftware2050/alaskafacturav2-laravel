@@ -12,6 +12,31 @@ use Illuminate\Validation\Rule;
 
 class ZonaController extends Controller
 {
+
+public function index(string $request)
+    {
+        
+        
+        try {
+            $idUser = auth()->user()->id;
+            $company = Empresa::where('usuario_id', $idUser)->first();
+    
+            $zona= Zona::where('company_id', $company ->id)->first();
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Datos de la zona consultados correctamente',
+                'data' => $zona,
+            ]);
+            
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener la zona'
+            ], 500);
+        }
+    }
     /**
      * Crear o actualizar empresa (UPSERT por NIT + usuario)
      */
