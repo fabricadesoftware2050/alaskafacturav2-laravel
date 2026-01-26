@@ -13,30 +13,40 @@ use Illuminate\Validation\Rule;
 class ZonaController extends Controller
 {
 
-public function index()
-    {
-        
-        
-        try {
-            $idUser = auth()->user()->id;
-            $company = Empresa::where('usuario_id', $idUser)->first();
-    
-            $zona= Zona::where('company_id', $company ->id)->first();
-    
-            return response()->json([
-                'success' => true,
-                'message' => 'Datos de la zona consultados correctamente',
-                'data' => $zona,
-            ]);
-            
-        } catch (\Exception $e) {
+    public function index(Request $request)
+{
+    try {
+        $user = auth()->user();
+        $company = Empresa::where('usuario_id', $user->id)->firstOrFail();
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al obtener la zona'
-            ], 500);
-        }
+        // Parámetros de paginación
+        $perPage = $request->get('per_page', 10); // default 10
+        $page    = $request->get('page', 1);
+
+        $zonas = Zona::where('company_id', $company->id)
+            ->orderBy('codigo')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Datos de las zonas consultados correctamente',
+            'data' => $zonas->items(),
+            'meta' => [
+                'current_page' => $zonas->currentPage(),
+                'per_page'     => $zonas->perPage(),
+                'total'        => $zonas->total(),
+                'last_page'    => $zonas->lastPage(),
+            ],
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al obtener las zonas',
+        ], 500);
     }
+}
+
     /**
      * Crear o actualizar empresa (UPSERT por NIT + usuario)
      */
