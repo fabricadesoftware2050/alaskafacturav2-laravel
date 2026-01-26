@@ -13,7 +13,7 @@ use Illuminate\Validation\Rule;
 class ZonaController extends Controller
 {
 
-public function index(string $request)
+public function index()
     {
         
         
