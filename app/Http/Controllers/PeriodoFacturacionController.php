@@ -40,26 +40,26 @@ class PeriodoFacturacionController extends Controller
         }
 
 
-        $zonas = $query
+        $model = $query
             ->orderBy('fecha_inicio')
             ->paginate($perPage);
 
         return response()->json([
             'success' => true,
-            'message' => 'Datos de las zonas consultados correctamente',
-            'data' => $zonas->items(),
+            'message' => 'Datos consultados correctamente',
+            'data' => $model->items(),
             'meta' => [
-                'current_page' => $zonas->currentPage(),
-                'per_page'     => $zonas->perPage(),
-                'total'        => $zonas->total(),
-                'last_page'    => $zonas->lastPage(),
+                'current_page' => $model->currentPage(),
+                'per_page'     => $model->perPage(),
+                'total'        => $model->total(),
+                'last_page'    => $model->lastPage(),
             ],
         ]);
 
     } catch (\Exception $e) {
         return response()->json([
             'success' => false,
-            'message' => 'Error al obtener las zonas',
+            'message' => 'Error al obtener los datos',
         ], 500);
     }
 }
