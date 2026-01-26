@@ -9,7 +9,7 @@ class Zona extends Model
       protected $table = "zonas";
 
     protected $fillable = [
-        "nombe",
+        "nombre",
         "codigo",
         "activa",
         "company_id",
