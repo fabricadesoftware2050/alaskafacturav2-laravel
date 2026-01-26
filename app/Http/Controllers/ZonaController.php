@@ -134,12 +134,13 @@ class ZonaController extends Controller
          $zona->delete();
           return response()->json([
             'message' => 'Operaciópn exitosa'
-        ], 2000);
+        ], 200);
         } catch (\Exception $e) {
 
 
         return response()->json([
-            'message' => 'No está permitido eliminar la empresa'
+            'message' => 'No está permitido eliminar la empresa',
+            'message'=> $e->getMessage()
         ], 403);
         }
     }
