@@ -104,6 +104,7 @@ class PeriodoFacturacionController extends Controller
             'fecha_vencimiento' => 'nullable|date|after_or_equal:fecha_facturacion',
             'estado' => 'required|string|in:ABIERTO,EN LECTURA,FACTURADO,CERRADO',
         ]);
+        $data['company_id'] = $company->id;
 
 
         
@@ -152,6 +153,7 @@ class PeriodoFacturacionController extends Controller
             'fecha_vencimiento' => 'nullable|date|after_or_equal:fecha_facturacion',
             'estado' => 'required|string|in:ABIERTO,EN LECTURA,FACTURADO,CERRADO',
         ]);
+        $data['company_id'] = $company->id;
 
         $model->update($data);
 
