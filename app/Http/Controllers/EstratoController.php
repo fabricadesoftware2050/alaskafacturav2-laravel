@@ -81,7 +81,7 @@ class EstratoController extends Controller
                 ],
                 'descripcion' => 'required|string|max:255',
                 'clase_uso' => 'required|string|max:50',
-                'estrato_nivel' => 'required|string',
+                'estrato_nivel' => 'required',
 
                 'codigo_clase_uso' => 'nullable|string|max:50',
                 'factor_produccion' => 'nullable|string|max:50',
@@ -168,7 +168,7 @@ class EstratoController extends Controller
                 ],
                 'descripcion' => 'required|string|max:255',
                 'clase_uso' => 'required|string|max:50',
-                'estrato_nivel' => 'required|string',
+                'estrato_nivel' => 'required',
 
                 'codigo_clase_uso' => 'nullable|string|max:50',
                 'factor_produccion' => 'nullable|string|max:50',

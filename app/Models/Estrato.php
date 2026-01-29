@@ -34,7 +34,6 @@ class Estrato extends Model
      * Casts automáticos
      */
     protected $casts = [
-        'estrato_nivel' => 'integer',
         'residencial'   => 'boolean',
 
         'acueducto'     => 'array',
