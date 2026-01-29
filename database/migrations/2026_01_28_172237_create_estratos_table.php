@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('codigo', 10)->unique(); // E1, E2...
             $table->string('descripcion');
             $table->string('clase_uso', 60); // RESIDENCIAL
-            $table->unsignedTinyInteger('estrato_nivel'); // 1 - 6
+            $table->string('estrato_nivel',100); // 1 - 6
             $table->string('codigo_clase_uso', 50)->nullable();
             $table->string('factor_produccion', 50)->nullable();
 

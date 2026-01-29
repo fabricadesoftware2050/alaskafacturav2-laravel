@@ -39,7 +39,7 @@ class EstratoController extends Controller
             }
 
             $estratos = $query
-                ->orderBy('estrato_nivel')
+                ->orderBy('codigo')
                 ->paginate($perPage);
 
             return response()->json([
@@ -81,7 +81,7 @@ class EstratoController extends Controller
                 ],
                 'descripcion' => 'required|string|max:255',
                 'clase_uso' => 'required|string|max:50',
-                'estrato_nivel' => 'required|integer|min:0|max:10',
+                'estrato_nivel' => 'required|string',
 
                 'codigo_clase_uso' => 'nullable|string|max:50',
                 'factor_produccion' => 'nullable|string|max:50',
@@ -168,7 +168,7 @@ class EstratoController extends Controller
                 ],
                 'descripcion' => 'required|string|max:255',
                 'clase_uso' => 'required|string|max:50',
-                'estrato_nivel' => 'required|integer|min:0|max:10',
+                'estrato_nivel' => 'required|string',
 
                 'codigo_clase_uso' => 'nullable|string|max:50',
                 'factor_produccion' => 'nullable|string|max:50',
