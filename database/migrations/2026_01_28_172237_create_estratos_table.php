@@ -10,7 +10,7 @@ return new class extends Migration {
             $table->id();
 
             // Identificación
-            $table->string('codigo', 10)->unique(); // E1, E2...
+            $table->string('codigo', 100)->unique(); // E1, E2...
             $table->string('descripcion');
             $table->string('clase_uso', 60); // RESIDENCIAL
             $table->string('estrato_nivel',100); // 1 - 6

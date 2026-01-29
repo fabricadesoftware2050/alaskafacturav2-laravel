@@ -75,7 +75,7 @@ class EstratoController extends Controller
                 'codigo' => [
                     'required',
                     'string',
-                    'max:10',
+                    'max:100',
                     Rule::unique('estratos')
                         ->where(fn ($q) => $q->where('company_id', $company->id)),
                 ],
@@ -161,7 +161,7 @@ class EstratoController extends Controller
                 'codigo' => [
                     'required',
                     'string',
-                    'max:10',
+                    'max:100',
                     Rule::unique('estratos')
                         ->where(fn ($q) => $q->where('company_id', $company->id))
                         ->ignore($estrato->id),
