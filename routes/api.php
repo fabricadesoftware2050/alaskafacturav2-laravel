@@ -8,6 +8,7 @@ use App\Http\Controllers\MunicipioDepartamentoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\ZonaController;
 use App\Http\Controllers\PeriodoFacturacionController;
+use App\Http\Controllers\CicloFacturacionController;
 use App\Http\Controllers\EstratoController;
 
 use App\Models\User;
@@ -48,6 +49,7 @@ Route::prefix('v2')->group(function () {
             Route::apiResource('empresas', EmpresaController::class);
             Route::apiResource('zonas', ZonaController::class);
             Route::apiResource('periodos_facturacion', PeriodoFacturacionController::class);
+            Route::apiResource('ciclos_facturacion', CicloFacturacionController::class);
             Route::apiResource('estratos', EstratoController::class);
         });
     });
