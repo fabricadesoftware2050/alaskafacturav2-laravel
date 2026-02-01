@@ -13,20 +13,39 @@ return new class extends Migration
     {
         Schema::create('periodo_facturacion', function (Blueprint $table) {
             $table->id();
-             $table->string('codigo', 10)->unique(true);
-             $table->string('nombre', 100);
-            $table->date('fecha_inicio');
-            $table->date('fecha_fin');
-            $table->date('fecha_lectura')->nullable(true);
-            $table->date('fecha_facturacion')->nullable(true);
-            $table->date('fecha_vencimiento')->nullable(true);
-            $table->enum('estado',['ABIERTO','EN LECTURA','FACTURADO','CERRADO'])->default('ABIERTO');
-            // --- Relación ---
-            $table->foreignId('company_id')
-                ->nullable()
-                ->constrained('companies')
-                ->nullOnDelete();
+
+            // 1. Vinculación con la Regla
+            $table->foreignId('ciclo_id')
+                  ->constrained('ciclos')
+                  ->onDelete('cascade') // Si borras el ciclo, borras su historia (o usa restrict)
+                  ->comment('Hereda las reglas configuradas en el ciclo');
+
+            // 2. Definición Temporal
+            $table->unsignedTinyInteger('mes')->comment('Mes calendario (1-12)');
+            $table->year('anio')->comment('Año fiscal, ej: 2026');
+
+            // 3. Fechas Calendario REALES (EJECUCIÓN)
+            // Estas son las fechas que van impresas en el recibo.
+
+            $table->date('fecha_inicio_lectura')->comment('Inicio real de toma de lecturas');
+            $table->date('fecha_fin_lectura')->nullable()->comment('Fin real de toma de lecturas');
+            
+            $table->date('fecha_emision')->comment('Fecha de generación de la factura');
+            $table->date('fecha_vencimiento')->comment('Fecha límite de pago');
+            $table->date('fecha_suspension')->nullable()->comment('Fecha programada de corte');
+
+            // 4. Estado del Proceso
+            $table->enum('estado', ['ABIERTO', 'EN_LECTURA', 'FACTURADO', 'CERRADO', 'ANULADO'])
+                  ->default('ABIERTO')
+                  ->index()
+                  ->comment('Estado actual del flujo de facturación');
+
             $table->timestamps();
+            $table->softDeletes();
+
+            // RESTRICCIÓN CRÍTICA:
+            // Evita duplicar la facturación del mismo mes para el mismo ciclo.
+            $table->unique(['ciclo_id', 'mes', 'anio'], 'unique_periodo_ciclo_mes');
         });
     }
 

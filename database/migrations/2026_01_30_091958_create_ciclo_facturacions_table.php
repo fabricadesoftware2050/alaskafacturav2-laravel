@@ -13,47 +13,43 @@ return new class extends Migration
     {
         Schema::create('ciclos', function (Blueprint $table) {
             $table->id();
-            
-            // 1. Identificación y Configuración (Se repetirán cada mes)
-            // Nota: Quitamos el ->unique() individual de 'codigo' porque se repetirá en cada periodo
-            $table->string('codigo', 50)->comment('Código del ciclo, ej: C01. Se repite cada mes.');
-            $table->string('nombre', 100)->comment('Nombre descriptivo, ej: Ciclo 1 - Casco Urbano');
+
+            // 1. Relaciones y Organización
+            $table->foreignId('company_id')->index()->comment('Empresa dueña del ciclo');
+            $table->foreignId('zona_id')->nullable()->index()->comment('Zona geográfica asociada');
+
+            // 2. Identificación Visual
+            $table->string('codigo', 50)->comment('Identificador interno, ej: C01');
+            $table->string('nombre', 100)->comment('Nombre descriptivo, ej: Ciclo Norte Residencial');
             $table->text('descripcion')->nullable();
-            
-            // 2. Definición del Periodo (El factor tiempo)
-            $table->unsignedTinyInteger('periodo_mes')->comment('Mes del 1 al 12');
-            $table->year('periodo_anio')->comment('Año fiscal, ej: 2026');
 
-            // 3. Fechas Operativas Reales (Cronograma)
-            $table->date('fecha_inicio_lectura')->comment('Fecha inicio toma de lecturas');
-            $table->date('fecha_fin_lectura')->nullable()->comment('Fecha fin toma de lecturas');
-            $table->date('fecha_facturacion')->comment('Fecha de generación de la factura');
-            $table->date('fecha_pago_oportuno')->nullable()->comment('Fecha sugerida de pago');
-            $table->date('fecha_vencimiento')->comment('Fecha límite legal');
-            $table->date('fecha_suspension')->comment('Fecha de corte por no pago');
+            // 3. Reglas de Cronograma (PLANIFICACIÓN)
+            // Estas reglas definen el "Deber ser" de cada mes.
 
-            // 4. Parámetros de configuración (Snapshot de reglas)
-            $table->tinyInteger('dia_corte_sugerido')->nullable()->comment('Día base para calcular fechas futuras');
-            $table->tinyInteger('dias_vencimiento')->default(15)->comment('Días dados para pagar');
+            $table->unsignedTinyInteger('dia_inicio_lectura_sugerido')
+                  ->default(1)
+                  ->comment('Día del mes ideal para iniciar lecturas (1-28)');
 
-            // 5. Control de Estado y Auditoría
-            $table->enum('estado', ['ABIERTO', 'EN_LECTURA', 'FACTURADO', 'CERRADO'])
-                  ->default('ABIERTO')
-                  ->comment('Control del flujo de trabajo');
-            
+            $table->unsignedTinyInteger('dias_duracion_lectura')
+                  ->default(3)
+                  ->comment('Días hábiles estimados para completar la ruta');
+
+            $table->unsignedTinyInteger('dia_emision_sugerido')
+                  ->default(5)
+                  ->comment('Día del mes ideal para generar la factura (PDF)');
+
+            $table->unsignedTinyInteger('dias_para_vencimiento')
+                  ->default(15)
+                  ->comment('Días plazo para pago (se suma a la fecha de emisión)');
+
+                  
+            // 4. Control
             $table->boolean('activo')->default(true);
-            $table->unsignedBigInteger('company_id')->nullable()->index()->comment('ID de la empresa (SaaS)');
-            $table->unsignedBigInteger('zona_id')->nullable()->index()->comment('ID de la zona');
-            
             $table->timestamps();
             $table->softDeletes();
 
-            // 6. Restricción Única Compuesta (CRÍTICO EN TABLA ÚNICA)
-            // Esto evita que crees el ciclo "C01" dos veces para "Enero 2026" en la misma empresa.
-            $table->unique(
-                ['company_id', 'codigo', 'periodo_mes', 'periodo_anio'], 
-                'unique_ciclo_periodo_empresa'
-            );
+            // RESTRICCIÓN: Código único por empresa
+            $table->unique(['company_id', 'codigo'], 'unique_ciclo_empresa');
         });
     }
 

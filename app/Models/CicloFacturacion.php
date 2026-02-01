@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,89 +13,81 @@ class CicloFacturacion extends Model
 
     protected $table = 'ciclos';
 
-    /**
-     * Los atributos que se pueden asignar masivamente.
-     */
     protected $fillable = [
+        'company_id',
+        'zona_id',
         'codigo',
         'nombre',
         'descripcion',
-        
-        // Periodo
-        'periodo_mes',
-        'periodo_anio',
-
-        // Fechas Cronograma
-        'fecha_inicio_lectura',
-        'fecha_fin_lectura',
-        'fecha_facturacion',
-        'fecha_pago_oportuno',
-        'fecha_vencimiento',
-        'fecha_suspension',
-
-        // Configuración
-        'dia_corte_sugerido',
-        'dias_vencimiento',
-
-        // Estado y Relaciones
-        'estado', // 'ABIERTO', 'EN_LECTURA', 'FACTURADO', 'CERRADO'
+        'dia_inicio_lectura_sugerido',
+        'dias_duracion_lectura',
+        'dia_emision_sugerido',
+        'dias_para_vencimiento',
         'activo',
-        'company_id',
-        'zona_id'
     ];
 
-    /**
-     * Conversión automática de tipos de datos.
-     * CRÍTICO: Esto convierte los strings de la BD a objetos Carbon (Fecha)
-     */
     protected $casts = [
-        'fecha_inicio_lectura' => 'date:Y-m-d',
-        'fecha_fin_lectura'    => 'date:Y-m-d',
-        'fecha_facturacion'    => 'date:Y-m-d',
-        'fecha_pago_oportuno'  => 'date:Y-m-d',
-        'fecha_vencimiento'    => 'date:Y-m-d',
-        'fecha_suspension'     => 'date:Y-m-d',
-        'activo'               => 'boolean',
-        'periodo_mes'          => 'integer',
-        'periodo_anio'         => 'integer',
+        'activo' => 'boolean',
+        'dia_inicio_lectura_sugerido' => 'integer',
+        'dias_duracion_lectura' => 'integer',
+        'dia_emision_sugerido' => 'integer',
+        'dias_para_vencimiento' => 'integer',
     ];
 
-    /**
-     * Relación con la Empresa (SaaS)
-     */
-    public function empresa()
+    /*
+    |--------------------------------------------------------------------------
+    | Relaciones
+    |--------------------------------------------------------------------------
+    */
+
+    public function periodos()
     {
-        return $this->belongsTo(Empresa::class, 'company_id');
+        return $this->hasMany(PeriodoFacturacion::class, 'ciclo_id');
     }
 
-    /**
-     * Relación con la Zona (Opcional, si tienes tabla zonas)
-     */
     public function zona()
     {
-        return $this->belongsTo(Zona::class, 'zona_id');
+        return $this->belongsTo(Zona::class, 'zona_id'); // Asumiendo que existe
     }
 
     /*
     |--------------------------------------------------------------------------
-    | Scopes (Filtros rápidos)
+    | Lógica de Negocio (La Magia)
     |--------------------------------------------------------------------------
     */
 
     /**
-     * Scope para filtrar por estado "ABIERTO"
+     * Crea el periodo de facturación para un mes/año específico
+     * calculando las fechas automáticamente.
      */
-    public function scopeAbiertos($query)
+    public function generarPeriodo(int $mes, int $anio)
     {
-        return $query->where('estado', 'ABIERTO');
-    }
+        // 1. Calcular Fecha Inicio Lectura (Ej: Día 1 del mes)
+        $inicioLectura = Carbon::createFromDate($anio, $mes, $this->dia_inicio_lectura_sugerido);
+        
+        // 2. Calcular Fin Lectura (Inicio + Duración)
+        $finLectura = $inicioLectura->copy()->addDays($this->dias_duracion_lectura);
 
-    /**
-     * Scope para buscar el periodo actual
-     */
-    public function scopeDelPeriodo($query, $mes, $anio)
-    {
-        return $query->where('periodo_mes', $mes)
-                     ->where('periodo_anio', $anio);
+        // 3. Calcular Fecha Emisión Factura (Ej: Día 5 del mes)
+        // Nota: Si la fecha de lectura supera a la de emisión, ajustamos al día siguiente de lectura
+        $fechaEmision = Carbon::createFromDate($anio, $mes, $this->dia_emision_sugerido);
+        if ($fechaEmision->lte($finLectura)) {
+            $fechaEmision = $finLectura->copy()->addDay();
+        }
+
+        // 4. Calcular Vencimiento (Emisión + Días Plazo)
+        $vencimiento = $fechaEmision->copy()->addDays($this->dias_para_vencimiento);
+
+        // 5. Crear el registro en la BD
+        return $this->periodos()->create([
+            'mes' => $mes,
+            'anio' => $anio,
+            'fecha_inicio_lectura' => $inicioLectura,
+            'fecha_fin_lectura' => $finLectura,
+            'fecha_emision' => $fechaEmision,
+            'fecha_vencimiento' => $vencimiento,
+            'fecha_suspension' => $vencimiento->copy()->addDays(5), // Ejemplo: 5 días tras vencer se corta
+            'estado' => 'ABIERTO'
+        ]);
     }
 }
