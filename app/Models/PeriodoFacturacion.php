@@ -10,7 +10,7 @@ class PeriodoFacturacion extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'periodos_facturacion';
+    protected $table = 'periodo_facturacion';
 
     protected $fillable = [
         'ciclo_id',

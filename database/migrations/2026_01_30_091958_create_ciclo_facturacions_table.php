@@ -14,15 +14,12 @@ return new class extends Migration
         Schema::create('ciclos', function (Blueprint $table) {
             $table->id();
 
-            // 1. Relaciones y Organización
-            $table->foreignId('company_id')->index()->comment('Empresa dueña del ciclo');
-            $table->foreignId('zona_id')->nullable()->index()->comment('Zona geográfica asociada');
-
+            
             // 2. Identificación Visual
             $table->string('codigo', 50)->comment('Identificador interno, ej: C01');
             $table->string('nombre', 100)->comment('Nombre descriptivo, ej: Ciclo Norte Residencial');
             $table->text('descripcion')->nullable();
-
+            
             // 3. Reglas de Cronograma (PLANIFICACIÓN)
             // Estas reglas definen el "Deber ser" de cada mes.
 
@@ -30,25 +27,35 @@ return new class extends Migration
                   ->default(1)
                   ->comment('Día del mes ideal para iniciar lecturas (1-28)');
 
-            $table->unsignedTinyInteger('dias_duracion_lectura')
+                  $table->unsignedTinyInteger('dias_duracion_lectura')
                   ->default(3)
                   ->comment('Días hábiles estimados para completar la ruta');
-
+                  
             $table->unsignedTinyInteger('dia_emision_sugerido')
                   ->default(5)
                   ->comment('Día del mes ideal para generar la factura (PDF)');
 
-            $table->unsignedTinyInteger('dias_para_vencimiento')
+                  $table->unsignedTinyInteger('dias_para_vencimiento')
                   ->default(15)
                   ->comment('Días plazo para pago (se suma a la fecha de emisión)');
-
                   
-            // 4. Control
-            $table->boolean('activo')->default(true);
-            $table->timestamps();
-            $table->softDeletes();
-
-            // RESTRICCIÓN: Código único por empresa
+                  
+                  // 4. Control
+                  $table->boolean('activo')->default(true);
+                  $table->timestamps();
+                  $table->softDeletes();
+                  
+                  // 1. Relaciones y Organización
+                 
+             $table->foreignId('company_id')
+                ->nullable()
+                ->constrained('companies')
+                ->nullOnDelete();
+             $table->foreignId('zona_id')
+                ->nullable()
+                ->constrained('zonas')
+                ->nullOnDelete();
+                  // RESTRICCIÓN: Código único por empresa
             $table->unique(['company_id', 'codigo'], 'unique_ciclo_empresa');
         });
     }
