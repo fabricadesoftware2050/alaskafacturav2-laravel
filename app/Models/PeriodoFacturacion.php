@@ -45,7 +45,7 @@ class PeriodoFacturacion extends Model
 
     public function ciclo()
     {
-        return $this->belongsTo(Ciclo::class, 'ciclo_id');
+        return $this->belongsTo(CicloFacturacion::class, 'ciclo_id');
     }
 
     /*
