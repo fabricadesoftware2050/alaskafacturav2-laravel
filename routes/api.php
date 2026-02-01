@@ -50,7 +50,7 @@ Route::prefix('v2')->group(function () {
             Route::apiResource('zonas', ZonaController::class);
             Route::apiResource('periodos_facturacion', PeriodoFacturacionController::class);
             Route::apiResource('ciclos_facturacion', CicloFacturacionController::class);
-            Route::apiResource('ciclos_facturacion/abrir-periodo', [CicloFacturacionController::class,'abrirPeriodo']);
+            Route::post('ciclos_facturacion/{id}/abrir-periodo', [CicloFacturacionController::class,'abrirPeriodo']);
             Route::apiResource('estratos', EstratoController::class);
         });
     });
